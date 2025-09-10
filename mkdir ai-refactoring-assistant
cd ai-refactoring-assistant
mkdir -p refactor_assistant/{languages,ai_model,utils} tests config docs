@@ -1,0 +1,24 @@
+"""
+Base class for language-specific handlers.
+"""
+from abc import ABC, abstractmethod
+from pathlib import Path
+from typing import List, Dict, Any
+
+class BaseLanguageHandler(ABC):
+    """Abstract base class for language handlers."""
+    
+    @abstractmethod
+    def get_file_extensions(self) -> List[str]:
+        """Return list of file extensions this handler supports."""
+        pass
+        
+    @abstractmethod
+    def analyze(self, code: str, file_path: Path) -> List[Dict[str, Any]]:
+        """Analyze code and return refactoring suggestions."""
+        pass
+        
+    @abstractmethod
+    def refactor(self, code: str, suggestion: Dict[str, Any]) -> str:
+        """Apply a refactoring suggestion to the code."""
+        pass
