@@ -1,0 +1,50 @@
+ai-refactoring-assistant/
+│
+├── refactor_assistant/
+│   ├── __init__.py
+│   ├── main.py              # Main entry point
+│   ├── analyzer.py          # Code analysis logic
+│   ├── refactor.py          # Refactoring execution
+│   ├── rules_engine.py      # Rule management
+│   ├── safety_checker.py    # Safety validation
+│   ├── ai_model/            # AI components
+│   │   ├── __init__.py
+│   │   ├── pattern_detector.py
+│   │   └── suggestion_engine.py
+│   ├── languages/           # Language-specific handlers
+│   │   ├── __init__.py
+│   │   ├── python_handler.py
+│   │   ├── javascript_handler.py
+│   │   └── base_handler.py
+│   └── utils/
+│       ├ ── __init__.py
+│       ├── ast_parser.py
+│       ├── code_formatter.py
+│       └── vcs_integration.py
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_analyzer.py
+│   ├── test_refactor.py
+│   └── test_rules_engine.py
+│
+├── plugins/                 # Plugin system
+│   ├── __init__.py
+│   └── example_plugin.py
+│
+├── config/
+│   ├── default_rules.yaml   # Default refactoring rules
+│   └── language_config.yaml # Language-specific settings
+│
+├── docs/
+│   ├── api.md
+│   ├── rules.md
+│   └── plugins.md
+│
+├── requirements.txt
+├── setup.py
+├── pyproject.toml
+├── .pre-commit-config.yaml
+├── .gitignore
+├── LICENSE
+└── README.md
