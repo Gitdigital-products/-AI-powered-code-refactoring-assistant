@@ -1,0 +1,3 @@
+mkdir ai-refactoring-assistant
+cd ai-refactoring-assistant
+mkdir -p refactor_assistant/{languages,ai_model,utils} tests config docs
