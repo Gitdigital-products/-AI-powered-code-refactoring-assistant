@@ -28,7 +28,7 @@ Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/ai-refactoring-assistant.git
+git clone https://github.com/RickCreator87/ai-refactoring-assistant.git
 
 # Install dependencies
 cd ai-refactoring-assistant
