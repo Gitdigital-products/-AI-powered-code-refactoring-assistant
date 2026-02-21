@@ -1,0 +1,5 @@
+# Test Python
+python main.py --file tests/test_subject.py
+
+# Test Solana Rust
+python main.py --file tests/solana_test_subject.rs
