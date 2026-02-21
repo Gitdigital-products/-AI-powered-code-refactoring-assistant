@@ -1,0 +1,53 @@
+On Solana, refactoring isn't just about "clean code"—it's about Compute Unit (CU) efficiency. High CU usage leads to failed transactions and higher costs.
+1. Expanding the AST Analyzer (Rust/Syn)
+For Python, we used ast. For Rust, the industry standard is the syn crate. We can build a small Rust sidecar or use an AI-assisted parser to detect Solana-specific "Code Smells."
+New Rust Code Smells to Detect:
+ * Missing #[inline(always)]: Crucial for small helper functions to save CU.
+ * Large Account Structs: Identifying where Box<T> should be used to avoid stack overflows.
+ * Inefficient Serialization: Spotting where ZeroCopy could replace standard Borsh serialization.
+2. src/engine/solana_rules.yaml
+By moving rules to a YAML file, we allow the AI to specialize in Solana-specific optimizations without changing the core Python orchestrator.
+rules:
+  - id: solana-cu-optimization
+    description: "Check for high Compute Unit usage in loops"
+    pattern: "for _ in .. { ... }"
+    suggestion: "Consider using bitwise operations or stack-based arrays to save CU."
+    
+  - id: anchor-account-validation
+    description: "Ensure signers are validated"
+    pattern: "AccountInfo"
+    suggestion: "Use Anchor's Signer<'info> type for automatic validation."
+
+  - id: zero-copy-check
+    description: "Large data structures should use zero-copy"
+    threshold_bytes: 1024
+    suggestion: "Use #[account(zero_copy)] to avoid heap allocation overhead."
+
+3. Integrated Solana Sandbox
+To verify Rust code, the RefactorSandbox needs to trigger anchor test instead of pytest.
+# Update in src/engine/sandbox.py
+def verify_rust_refactor(self, project_path):
+    print("🦀 Compiling Solana program and running Anchor tests...")
+    result = subprocess.run(
+        ["anchor", "test"],
+        cwd=project_path,
+        capture_output=True,
+        text=True
+    )
+    return result.returncode == 0, result.stdout
+
+4. Updated Project Directory
+Your project now supports a multi-language, Web3-ready architecture:
+├── src/
+│   ├── engine/
+│   │   ├── python_analyzer.py
+│   │   ├── rust_analyzer.py      <-- NEW: Uses 'syn' or regex for Rust
+│   │   └── sandbox.py            <-- UPDATED: Supports 'anchor test'
+│   └── prompts/
+│       ├── python_prompts.j2
+│       └── solana_prompts.j2     <-- NEW: Specialized for CU optimization
+├── rules/
+│   └── solana_rules.yaml         <-- NEW: Compliance & Performance rules
+├── main.py                       <-- UPDATED: Auto-detects language
+└── README.md
+
