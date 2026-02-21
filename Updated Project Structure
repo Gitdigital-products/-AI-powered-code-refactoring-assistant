@@ -1,0 +1,17 @@
+├── .github/workflows/refactor-bot.yml
+├── src/
+│   ├── engine/
+│   │   ├── ast_analyzer.py      (Python AST)
+│   │   ├── rust_analyzer.py     (Rust/Regex Patterns)
+│   │   └── sandbox.py           (Pytest + Anchor Test)
+│   ├── utils/
+│   │   ├── llm_client.py        (OpenAI/Groq Bridge)
+│   │   └── diff_tool.py         (GitHub Markdown Diffs)
+│   └── prompts/
+│       ├── python_prompts.py
+│       └── solana_prompts.py    (CU & Safety focus)
+├── tests/
+│   ├── test_subject.py          (Messy Python)
+│   └── solana_test_subject.rs   (Unsafe Rust)
+├── main.py                      (Language-aware Orchestrator)
+└── README.md                    (With the Badge Walls!)
