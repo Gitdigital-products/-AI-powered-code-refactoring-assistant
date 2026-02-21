@@ -1,0 +1,44 @@
+name: AI Refactor Assistant
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  refactor:
+    if: contains(github.event.comment.body, '/refactor')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          # Add your LLM library here, e.g., pip install openai
+
+      - name: Run Refactor Engine
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # This assumes your main.py takes the PR diff or files as input
+          python main.py --pr ${{ github.event.issue.number }}
+
+      - name: Post Results
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "🤖 **AI Refactor Suggestion Generated!** Check the 'Files Changed' tab for the proposed diff."
+            })
